@@ -38,7 +38,7 @@ namespace kfs
     int _k;
     std::string _in_fn;
     FILE* _in_stream;
-    ska::bytell_hash_map<int, int> _mer_counts;
+    ska::bytell_hash_map<long, int> _mer_counts;
 
   public:
     void parse_input(void);
@@ -46,8 +46,8 @@ namespace kfs
     void query_fasta_sequence(char* sequence);
     void process_fasta_record(char* header, char* sequence);
     void debug_mer_counts(void);
-    int mer_to_key(std::string &s);
-    std::string key_to_mer(int key);
+    long mer_to_key(std::string &s);
+    std::string key_to_mer(long key);
 
     void initialize_command_line_options(int argc, char** argv);
     void print_usage(FILE* os);
@@ -64,12 +64,12 @@ namespace kfs
     std::string in_fn() const { return _in_fn; }
     void in_fn(const std::string& ifn) { _in_fn = ifn; }
 
-    inline ska::bytell_hash_map<int, int>& mer_counts(void) { return _mer_counts; }
-    inline int mer_count(const int& k) { return _mer_counts[k]; }
-    inline void mer_counts(const ska::bytell_hash_map<int, int>& mc) { _mer_counts = mc; }
-    inline void set_mer_count(const int& k, const int& v) { _mer_counts[k] = v; }
-    inline void erase_mer_count(const int& k) { _mer_counts.erase(k); }
-    inline void increment_mer_count(const int& k) { _mer_counts[k]++; }
+    inline ska::bytell_hash_map<long, int>& mer_counts(void) { return _mer_counts; }
+    inline int mer_count(const long& k) { return _mer_counts[k]; }
+    inline void mer_counts(const ska::bytell_hash_map<long, int>& mc) { _mer_counts = mc; }
+    inline void set_mer_count(const long& k, const int& v) { _mer_counts[k] = v; }
+    inline void erase_mer_count(const long& k) { _mer_counts.erase(k); }
+    inline void increment_mer_count(const long& k) { _mer_counts[k]++; }
 
     std::map<unsigned char, int> create_fmap(void) {
       std::map<unsigned char, int> m;

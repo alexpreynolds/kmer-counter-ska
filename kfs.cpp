@@ -101,7 +101,7 @@ kfs::KFS::process_fasta_record(char* header, char* sequence)
     std::string mer_r(mer_f);
     reverse_complement_string(mer_r);
     bool mer_f_is_canonical = (mer_f.compare(mer_r) <= 0);
-    int mer_key = this->mer_to_key((mer_f_is_canonical) ? mer_f : mer_r);
+    long mer_key = this->mer_to_key((mer_f_is_canonical) ? mer_f : mer_r);
     if (!mer_count(mer_key)) {
       set_mer_count(mer_key, 1);
     }
@@ -203,7 +203,7 @@ kfs::KFS::query_fasta_sequence(char* sequence)
     std::string mer_r(mer_f);
     reverse_complement_string(mer_r);
     bool mer_f_is_canonical = (mer_f.compare(mer_r) <= 0);
-    int mer_key = this->mer_to_key((mer_f_is_canonical) ? mer_f : mer_r);
+    long mer_key = this->mer_to_key((mer_f_is_canonical) ? mer_f : mer_r);
 
     // count result
     int mer_count_result = mer_count(mer_key);
@@ -217,16 +217,16 @@ void
 kfs::KFS::debug_mer_counts(void)
 {
   std::vector<int> v;
-  for(ska::bytell_hash_map<int, int>::iterator it = mer_counts().begin(); it != mer_counts().end(); ++it) {
+  for(ska::bytell_hash_map<long, int>::iterator it = mer_counts().begin(); it != mer_counts().end(); ++it) {
     v.push_back(it->first);
     std::fprintf(stderr, "%s\t%d\n", this->key_to_mer(it->first).c_str(), it->second);
   }
 }
 
-int
+long
 kfs::KFS::mer_to_key(std::string &s)
 {
-  int key = 0;
+  long key = 0;
   for (int j = this->k() - 1; j > -1; --j) {
     key += fmap[s[j]] * 1 << (2*(this->k() - 1 - j));
   }
@@ -234,7 +234,7 @@ kfs::KFS::mer_to_key(std::string &s)
 }
 
 std::string
-kfs::KFS::key_to_mer(int key)
+kfs::KFS::key_to_mer(long key)
 {
   std::string s;
   if (this->k() == 1) {
